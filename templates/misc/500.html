@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% csrf_token %}
+{% block title %}
+    Ошибка сервера
+{% endblock %}
+{% load static %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
+{% block content %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">Что-то пошло не так ...</h1>
+    </div>
+    <div class="single-card__section-text">
+        Вот так проблемка
+    </div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+<script src="{% static 'js/components/MyFollow.js' %}"></script>
+<script src="{% static 'js/components/Subscribe.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'js/myFollow.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    {% load static %}
+    {% csrf_token %}
+    <meta charset="UTF-8">
+    <meta name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        {% block title %}
+            HotCams
+        {% endblock %}
+    </title>
+    {% load static %}
+    {% block stylesheet %}
+        <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <main class="main container">
+        <div class="main__header">
+            <h1 class="main__title">
+                {{ category.name }}
+            </h1>
+        </div>
+        <div class="card-list" >
+            <p>
+                Content will be soon here
+            </p>
+        </div>
+        {%  include 'include/paginator.html' %}
+    </main>
+    
+    {% load flatpages %}
+    {% get_flatpages as flatpages %}
+    <footer class="footer">
+        <div class="footer__container container">
+            <a href="{% url 'index' %}" class="footer__brand link">HotCams</a>
+            <ul class="footer__items">
+                {% for page in flatpages %}
+                    <li class="footer__item"><a href="{{ page.url }}" class="footer__link link">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </footer>
+    {% block scripts %}
+        {% include 'include/recipeScripts.html' %}
+    {% endblock %}
+</body>
+
+</html>

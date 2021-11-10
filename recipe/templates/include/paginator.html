@@ -1,0 +1,20 @@
+<nav class="pagination" aria-label="Search results pages">
+    <ul class="pagination__container">
+        {% load spurl %}
+        {% if paginator.num_pages > 1 %}
+            {% if page.has_previous %}
+                <li class="pagination__item"><a class="pagination__link link" href="{% spurl path=request.get_full_path query=request.GET set_query='page={{ page.previous_page_number }}' %}"><span class="icon-left"></span></a></li>
+            {% endif %}
+            {% for pag in paginator %}
+                {% if pag.number != page.number %}
+                    <li class="pagination__item"><a class="pagination__link link" href="{% spurl path=request.get_full_path query=request.GET set_query='page={{ pag.number }}' %}">{{ pag.number }}</a></li>
+                {% else %}
+                    <li class="pagination__item pagination__item_active"><a class="pagination__link link" href="?page={{ pag.number }}">{{ pag.number }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page.has_next %}
+                <li class="pagination__item"><a class="pagination__link link" href="{% spurl path=request.get_full_path query=request.GET set_query='page={{ page.next_page_number }}' %}"><span class="icon-right"></span></a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</nav>

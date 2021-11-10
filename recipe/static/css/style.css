@@ -1,0 +1,16 @@
+.benefit__item .benefit__item-icon img,
+.map__item .map__item-img img,
+.map__item .map__item-num,
+.distribution__item .distribution__img img {
+	transition: .3s;
+}
+
+.benefit__item:hover .benefit__item-icon img,
+.map__item:hover .map__item-img img,
+.distribution__item:hover .distribution__img img {
+	transform: translateY(-15px);
+}
+
+.map__item:hover .map__item-num {
+	transform: translateY(-15px) rotate(-35deg);
+}

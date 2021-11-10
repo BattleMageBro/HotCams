@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    {% load static %}
+    {% csrf_token %}
+    <meta charset="UTF-8">
+    <meta name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        {% block title %}
+            HotCams
+        {% endblock %}
+    </title>
+    {% load static %}
+    {% block stylesheet %}
+        <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+    {% include  'nav.html' %}
+    <main class="main container">
+        <script src="{% static 'js/hls.js' %}"></script>
+
+        <center>
+        <video height="600" id="video" controls></video>
+        </center>
+
+        <script>
+        var video = document.getElementById('video');
+        if (Hls.isSupported()) {
+            var hls = new Hls({
+            debug: true,
+            });
+            hls.loadSource('http://localhost:8888/mystream/index.m3u8');
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+            video.play();
+            });
+        }
+        // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+        // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
+        // This is using the built-in support of the plain video element, without using hls.js.
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = 'http://localhost:8888/mystream/index.m3u8';
+            video.addEventListener('canplay', function () {
+            video.play();
+            });
+        }
+        </script>
+    </main>
+    
+    {% load flatpages %}
+    {% get_flatpages as flatpages %}
+    <footer class="footer">
+        <div class="footer__container container">
+            <a href="{% url 'index' %}" class="footer__brand link">HotCams</a>
+            <ul class="footer__items">
+                {% for page in flatpages %}
+                    <li class="footer__item"><a href="{{ page.url }}" class="footer__link link">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </footer>
+</body>
+
+</html>

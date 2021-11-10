@@ -1,0 +1,12 @@
+{% load flatpages %}
+{% get_flatpages as flatpages %}
+<footer class="footer">
+    <div class="footer__container container">
+        <a href="{% url 'index' %}" class="footer__brand link">HotCams</a>
+        <ul class="footer__items">
+            {% for page in flatpages %}
+                <li class="footer__item"><a href="{{ page.url }}" class="footer__link link">{{ page.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</footer>
