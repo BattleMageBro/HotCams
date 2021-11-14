@@ -59,148 +59,71 @@
 	<link rel="alternate" type="application/json" href="https://hotcamstoken.com/wp-json/wp/v2/pages/2" />
 </head>
 <body class="home page-template-default page page-id-2">
-	<header class="header">
-		<div class="container">
-			<div class="row justify-content-between align-items-center">
-				<div class="col-5 col-lg-auto">
-					<div class="header__logo">
-						<a href="{% url 'index' %}">
-							<img src="{% static 'images/logo.png' %}" alt="logo">
-						</a>
-					</div>
-				</div>
-				<div class="col-5 col-lg-auto">
-					<div class="header__menu">
-						<ul id="menu-main-menu" class="menu">
-							<li id="menu-item-10" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10">
-								<a target="_blank" rel="noopener" href="https://hotcamstoken.com/wp-content/uploads/2021/10/HotCams-WhitePaper-.pdf">
-									White Paper
-								</a>
-							</li>
-							<li id="menu-item-11" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11">
-								<a href="{% url 'index' %}">
-									Home
-								</a>
-							</li>
-							<li id="menu-item-12" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12">
-								<a href="{% url 'categories' %}">
-									Categories
-								</a>
-							</li>
-							<li id="menu-item-13" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13">
-								<a href="{% url 'streams' %}">
-									Streams
-								</a>
-							</li>
-							{% if request.user.is_authenticated %}
-								<li id="menu-item-14" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14">
-									<a href="{% url 'profile' username %}">
-										Profile
-									</a>
-								</li>
-							{% endif %}
-						</ul>					
-					</div>
-				</div>
-				<div class="col-2 d-lg-none header__btn">
-				   <span></span>
-				   <span></span>
-				   <span></span>
-				</div>
-			</div>
-		</div>
-	</header>
-<main id="main" class="site-main" role="main">
-	<section class="equipment">
-		<div class="container">
-            <div class="video_cont"> 
-                <script src="{% static 'js/hls.js' %}"></script>
+	{% include 'nav.html' %}
+	<main id="main" class="site-main" role="main">
+		<section class="equipment">
+			{% if live %}
+				<div class="container">
+					<div class="video_cont"> 
+						<script src="{% static 'js/hls.js' %}"></script>
 
-                <center>
-                <video height="600" id="video" controls></video>
-                </center>
-        
-                <script>
-                var video = document.getElementById('video');
-                if (Hls.isSupported()) {
-                    var hls = new Hls({
-                    debug: true,
-                    });
-                    hls.loadSource('http://localhost:8888/{{ stream_url }}');
-                    hls.attachMedia(video);
-                    hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-                    video.play();
-                    });
-                }
-                // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
-                // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
-                // This is using the built-in support of the plain video element, without using hls.js.
-                else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = 'http://localhost:8888/{{ stream_url }}';
-                    video.addEventListener('canplay', function () {
-                    video.play();
-                    });
-                }
-                </script>
-            </div>
-		</div>
-	</section>
-</main>
-	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__logo">
-						<a href="/">
-							<img src="{% static 'images/logo.png' %}" alt="">
-						</a>
-					</div>
-					<div class="footer__social">
-						join us on
-							<a href="https://t.me/hotcams_official" target="_blank">
-								<i class="fab fa-telegram-plane"></i>
-							</a>							
-							<a href="https://twitter.com/hotcams_token" target="_blank">
-								<i class="fab fa-twitter"></i>
-							</a>
+						<center>
+						<video height="600" id="video" controls></video>
+						</center>
+				
+						<script>
+						var video = document.getElementById('video');
+						if (Hls.isSupported()) {
+							var hls = new Hls({
+							debug: true,
+							});
+							hls.loadSource('hhttp://127.0.0.1:8080/live/livestream/{{ stream_url }}');
+							hls.attachMedia(video);
+							hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+							video.play();
+							});
+						}
+						// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+						// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
+						// This is using the built-in support of the plain video element, without using hls.js.
+						else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+							video.src = 'http://127.0.0.1:8888/live/livestream/{{ stream_url }}';
+							video.addEventListener('canplay', function () {
+							video.play();
+							});
+						}
+						</script>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__title">
-						HotCams
-					</div>
-					<div class="footer__menu">
-						<ul id="menu-main-menu-1" class="menu">
-							<li class="pink menu-item menu-item-type-custom menu-item-object-custom menu-item-10"><a target="_blank" rel="noopener" href="https://hotcamstoken.com/wp-content/uploads/2021/10/HotCams-WhitePaper-.pdf">White Paper</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11"><a href="{% url 'index' %}">Home</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12"><a href="">Streams</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13"><a href="{% url 'categories' %}">Categories</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14"><a href="">Contacts</a></li>
-						</ul>					
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__title">
-						Get in touch
-					</div>
-					<div class="footer__mail">
-						<a href="mailto:support@hotcamstoken.com">
-							support@hotcamstoken.com							
-						</a>
-					</div>										
-				</div>
-				<div class="col-sm-6 col-lg-3">
-					<div class="footer__title">
-						Quick links
-					</div>
-					<div class="footer__link">
-						<a href="https://bscscan.com/token/0x6D1B3fdf5096465fb8B81A9B6e734a9641b50c24" target="_blank">BSC CONTRACT</a>
-						<a href="https://pancakeswap.finance/swap/0x6d1b3fdf5096465fb8b81a9b6e734a9641b50c24" target="_blank">BUY ON PANCAKESWAP</a>
+			{% else %}
+				<div class="video_cont">
+					<div class="row">
+						<div class="col-12">
+							<div class="section-title wow fadeInDown">
+								This hot girl is currently offline				
+							</div>					
+							<div class="equipment__wrapper">
+								<div class="equipment__item wow fadeInUp" data-wow-delay="0.3s">
+									<div class="equipment__img">
+										<img src="{% static 'images/tts.png' %}" alt="">
+									</div>
+									<div class="equipment__content">
+										<div class="equipment__content-title">
+											Soon...									
+										</div>
+										<div class="equipment__content-text">
+											she will come again just wait
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</footer>
+			{% endif %}
+		</section>
+	</main>
+	{% include 'footer.html' %}
 	<div id="scroll_up">
 		<img src="{% static 'images/up.png' %}" alt="">
 	</div>

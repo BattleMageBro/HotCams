@@ -56,141 +56,39 @@
 	<link rel="alternate" type="application/json" href="https://hotcamstoken.com/wp-json/wp/v2/pages/2" />
 </head>
 <body class="home page-template-default page page-id-2">
-	<header class="header">
-		<div class="container">
-			<div class="row justify-content-between align-items-center">
-				<div class="col-5 col-lg-auto">
-					<div class="header__logo">
-						<a href="{% url 'index' %}">
-							<img src="{% static 'images/logo.png' %}" alt="logo">
-						</a>
+    {% include 'nav.html' %}
+	<main id="main" class="site-main" role="main">
+		<section class="banner">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-12">
+						<div class="section-title wow fadeInDown">
+							<div class="banner__title">
+								Live streams
+							</div>				
+						</div>					
 					</div>
-				</div>
-				<div class="col-5 col-lg-auto">
-					<div class="header__menu">
-						<ul id="menu-main-menu" class="menu">
-							<li id="menu-item-10" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10">
-								<a target="_blank" rel="noopener" href="https://hotcamstoken.com/wp-content/uploads/2021/10/HotCams-WhitePaper-.pdf">
-									White Paper
-								</a>
-							</li>
-							<li id="menu-item-11" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11">
-								<a href="{% url 'index' %}">
-									Home
-								</a>
-							</li>
-							<li id="menu-item-12" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12">
-								<a href="{% url 'categories' %}">
-									Categories
-								</a>
-							</li>
-							<li id="menu-item-13" class="pink menu-item menu-item-type-custom menu-item-object-custom menu-item-13">
-								<a href="{% url 'streams' %}">
-									Streams
-								</a>
-							</li>
-							{% if request.user.is_authenticated %}
-								<li id="menu-item-14" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14">
-									<a href="{% url 'profile' username %}">
-										Profile
-									</a>
-								</li>
+					{% for stream in page %}
+						<div class="col-sm-6 col-lg-4">
+							{% if stream.image %}
+								<div class="team__img">
+									<a href="{% url 'streaming' stream.user.username%}" class="link" target="_blank"><img src="{{ stream.image.url }}" alt="{{ stream.user.username }}"></a>
+								</div>
 							{% endif %}
-						</ul>					
-					</div>
-				</div>
-				<div class="col-2 d-lg-none header__btn">
-				   <span></span>
-				   <span></span>
-				   <span></span>
-				</div>
-			</div>
-		</div>
-	</header>
-<main id="main" class="site-main" role="main">
-	<section class="banner">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-12">
-					<div class="section-title wow fadeInDown">
-						<div class="banner__title">
-							Live streams
-						</div>				
-					</div>					
-				</div>
-				{% for stream in page %}
-					<div class="col-sm-6 col-lg-4">
-						{% if stream.image %}
-							<div class="team__img">
-								<a href="{% url 'streaming' stream.user.username%}" class="link" target="_blank"><img src="{{ stream.image.url }}" alt="{{ stream.user.username }}"></a>
-							</div>
-						{% endif %}
-						<div class="team__name">
-							<div class="banner__text">
-								{{ stream.title }}
+							<div class="team__name">
+								<div class="banner__text">
+									<a href="{% url 'streaming' stream.user.username%}">{{ stream.title }}
+								</div>
 							</div>
 						</div>
-					</div>
-				{% endfor %}
+					{% endfor %}
+				</div>
+				
 			</div>
-		</div>
-	</section>
-</main>
-	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__logo">
-						<a href="/">
-							<img src="https://hotcamstoken.com/wp-content/themes/hotcamstoken/images/logo.png" alt="">
-						</a>
-					</div>
-					<div class="footer__social">
-						join us on
-							<a href="https://t.me/hotcams_official" target="_blank">
-								<i class="fab fa-telegram-plane"></i>
-							</a>							
-							<a href="https://twitter.com/hotcams_token" target="_blank">
-								<i class="fab fa-twitter"></i>
-							</a>
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__title">
-						HotCams
-					</div>
-					<div class="footer__menu">
-						<ul id="menu-main-menu-1" class="menu">
-							<li class="pink menu-item menu-item-type-custom menu-item-object-custom menu-item-10"><a target="_blank" rel="noopener" href="https://hotcamstoken.com/wp-content/uploads/2021/10/HotCams-WhitePaper-.pdf">White Paper</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11"><a href="{% url 'index' %}">Home</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12"><a href="">Streams</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13"><a href="{% url 'categories' %}">Categories</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14"><a href="">Contacts</a></li>
-						</ul>					
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__title">
-						Get in touch
-					</div>
-					<div class="footer__mail">
-						<a href="mailto:support@hotcamstoken.com">
-							support@hotcamstoken.com							
-						</a>
-					</div>										
-				</div>
-				<div class="col-sm-6 col-lg-3">
-					<div class="footer__title">
-						Quick links
-					</div>
-					<div class="footer__link">
-						<a href="https://bscscan.com/token/0x6D1B3fdf5096465fb8B81A9B6e734a9641b50c24" target="_blank">BSC CONTRACT</a>
-						<a href="https://pancakeswap.finance/swap/0x6d1b3fdf5096465fb8b81a9b6e734a9641b50c24" target="_blank">BUY ON PANCAKESWAP</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
+			{% include 'include/pag.html' %}
+		</section>
+	</main>
+	{% include 'footer.html' %}
 	<div id="scroll_up">
 		<img src="{% static 'images/up.png' %}" alt="">
 	</div>

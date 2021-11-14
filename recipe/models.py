@@ -38,14 +38,18 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Stream(models.Model):
-
     user = models.OneToOneField(
         User, related_name="stream", on_delete=models.CASCADE)
     title = models.CharField(max_length=100, blank=True)
     image = models.ImageField(upload_to='images/streams', blank=True, null=True)
     key = models.CharField(max_length=20, default=make_stream_key, unique=True)
+    private_key = models.CharField(max_length=22, blank=True, null=True)
+    category = models.ManyToManyField(Category, blank=True)
     started_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):

@@ -1,0 +1,71 @@
+
+<style>
+.pagination {
+    position: relative;
+    display: inline-block;
+}
+
+.pagination a {
+    color: #606af8;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+ul.pagination li {
+    display: inline;
+    position: relative;
+}
+
+ul.pagination li a {
+    color: #606af8;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-flex;
+    flex-direction: row;
+    list-style: none;
+    align-items: center;
+}
+
+ul.pagination li a.active {
+    background-color: #3f073f;
+    color: white;
+    border-radius: 5px;
+}
+
+.center {
+    text-align: center;
+    padding-bottom: 100px;
+}
+</style>
+
+
+<div class="center">
+    <div class="pagination">
+        <ul class="pagination">
+            {% load spurl %}
+            {% if paginator.num_pages > 1 %}
+                {% if page.has_previous %}
+                    <li><a href="{% spurl path=request.get_full_path query=request.GET set_query='page={{ page.previous_page_number }}' %}"><<</a></li>
+                {% endif %}
+                {% for pag in paginator %}
+                    {% if pag.number != page.number %}
+                        <li><a href="{% spurl path=request.get_full_path query=request.GET set_query='page={{ pag.number }}' %}">{{ pag.number }}</a></li>
+                    {% else %}
+                        <li><a class="active" href="?page={{ pag.number }}">{{ pag.number }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if page.has_next %}
+                    <li><a href="{% spurl path=request.get_full_path query=request.GET set_query='page={{ page.next_page_number }}' %}">>></a></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </div>
+</div>

@@ -132,9 +132,6 @@
         cursor: pointer;
         width: max-content;
     }
-    .button:active {
-        box-shadow: 0 0 7px #ddd;
-    }
     .button_style_blue {
         background: #4A61DD;
         color: #FFFFFF;
@@ -182,6 +179,16 @@
         height: 100%;
         flex-direction: column;
     }
+	.but_dd {
+        position: relative;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+		padding-bottom: 150px;
+    }
 	</style>
 	<link rel='stylesheet' id='wp-block-library-css'  href="{% static 'css/dist/style.min.css' %}" type='text/css' media='all' />
 	<link rel='stylesheet' id='hotcamstoken-bootstrap-style-css'  href="{% static 'css/bootstrap.min.css'%}" type='text/css' media='all' />
@@ -197,173 +204,120 @@
 	<link rel="https://api.w.org/" href="https://hotcamstoken.com/wp-json/" /><link rel="alternate" type="application/json" href="https://hotcamstoken.com/wp-json/wp/v2/pages/2" />
 </head>
 <body class="home page-template-default page page-id-2">
-	<header class="header">
-		<div class="container">
-			<div class="row justify-content-between align-items-center">
-				<div class="col-5 col-lg-auto">
-					<div class="header__logo">
-						<a href="{% url 'index' %}">
-							<img src="{% static 'images/logo.png' %}" alt="logo">
-						</a>
+    {% include 'nav.html' %}
+	<main id="main" class="site-main" role="main">
+		<section class="banner">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="section-title wow fadeInDown">
+							Profile {{ username }}				
+						</div>	
 					</div>
-				</div>
-				<div class="col-5 col-lg-auto">
-					<div class="header__menu">
-						<ul id="menu-main-menu" class="menu">
-							<li id="menu-item-10" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10">
-								<a target="_blank" rel="noopener" href="https://hotcamstoken.com/wp-content/uploads/2021/10/HotCams-WhitePaper-.pdf">
-									White Paper
-								</a>
-							</li>
-							<li id="menu-item-11" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11">
-								<a href="{% url 'index' %}" class="banner__link-text">
-									Home
-								</a>
-							</li>
-							<li id="menu-item-12" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12">
-								<a href="{% url 'categories' %}" class="banner__link-text">
-									Categories
-								</a>
-							</li>
-							<li id="menu-item-13" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13">
-								<a href="{% url 'streams' %}" class="banner__link-text">
-									Streams
-								</a>
-							</li>
-							{% if request.user.is_authenticated %}
-								<li id="menu-item-14" class="pink menu-item menu-item-type-custom menu-item-object-custom menu-item-14">
-									<a href="{% url 'profile' username %}">
-										Profile
-									</a>
-								</li>
+					<div class="col-xs-6" style="max-width: 100%; width: 50%;">		
+						<form class="form" method="post" action="{% url 'change_key' %}" enctype="multipart/form-data">
+							<div class="form__group">
+								<label for="id_key" class="form__label">Stream secret key</label>
+								<div class="form__field-group">
+									<input type="text" name="key" id="id_key" class="form__input" value="{{ stream.key }}">
+									<span class="form__error">{%if form.errors or error%}Key lenght must be 20 symbols{% endif %}</span>
+								</div>
+							</div>
+							<div class="form__group">
+								<label for="id_title" class="form__label">Stream Title</label>
+								<div class="form__field-group">
+									<input type="text" name="title" id="id_title" class="form__input" value="{{ stream.title }}">
+									<span class="form__error">{%if form.errors or error%}Max title lenght is 100{% endif %}</span>
+								</div>
+							</div>
+							<div class="form__group">
+								<span class="form__label">Change stream image</span>
+								<div class="form__field-group">
+									<label for="id_image" class="form__file-button">choose file</label>
+									<input type="file" name="image" id="id_image" class="form__file" accept="image/*"  value="{{ stream.image }}">
+									<span class="form__error"></span>
+								</div>
+							</div>
+							<div class="form__footer">
+								<div class="button">
+									<button class="button button_style_blue">Save</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="col-xs-6" style="max-width: 100%; width:50%;">
+						<div class="but_d">
+							{% if live %}
+								<form action="{% url 'stop-stream' %}" method="post">
+									<input type="hidden" name="name" value="{{ stream.key }}">
+									<button type="submit" class="but but_style_blue">Stop stream</button>
+								</form>
+							{% else %}
+								<form action="{% url 'start-stream' %}" method="post">
+									<input type="hidden" name="name" value="{{ stream.key }}">
+									<button type="submit" class="but but_style_blue">Start public stream</button>
+								</form>
 							{% endif %}
-						</ul>					
+						</div>
 					</div>
-				</div>
-				<div class="col-2 d-lg-none header__btn">
-				   <span></span>
-				   <span></span>
-				   <span></span>
-				</div>
-			</div>
-		</div>
-	</header>
-<main id="main" class="site-main" role="main">
-	<section class="banner">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="section-title wow fadeInDown">
-						Profile {{ username }}				
-					</div>	
-                </div>
-                <div class="col-xs-6" style="max-width: 100%; width: 50%;">		
-                    <form class="form" method="post" action="{% url 'change_key' %}">
-                        <div class="form__group">
-                            <label for="id_key" class="form__label">Stream secret key</label>
-                            <div class="form__field-group">
-                                <input type="text" name="key" id="id_key" class="form__input" value="{{ stream.key }}">
-                                <span class="form__error">{%if form.errors or error%}Key lenght must be 20 symbols{% endif %}</span>
-                            </div>
-                        </div>
-                        <div class="form__group">
-                            <label for="id_title" class="form__label">Stream Title</label>
-                            <div class="form__field-group">
-                                <input type="text" name="title" id="id_title" class="form__input" value="{{ stream.title }}">
-                                <span class="form__error">{%if form.errors or error%}Max title lenght is 100{% endif %}</span>
-                            </div>
-                        </div>
-                        <div class="form__group">
-                            <span class="form__label">Change stream image</span>
-                            <div class="form__field-group">
-                                <label for="id_image" class="form__file-button">choose file</label>
-                                <input type="file" name="image" id="id_image" class="form__file" accept="image/*" value="{{ stream.image }}">
-                                <span class="form__error"></span>
-                            </div>
-                        </div>
-                        <div class="form__footer">
-                            <div class="but">
-                                <button class="button button_style_blue">Save</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-xs-6" style="max-width: 100%; width:50%;">
-                    <div class="but_d">
-                        <button class="but but_style_blue">Start stream</button>
-                    </div>
-                </div>
-                <div class="clearfix"></div> 
-                <div class="col-xs-6" style="max-width: 100%; width: 50%; position: relative;">	
-                    <form class="form" method="post" action="{% url 'profile' username %}">
-                        <div class="form__group">
-                            <label for="id_key" class="form__label">Copy this Path to your OBS settings</label>
-                            <div class="form__field-group">
-                                <input type="text" name="key" id="id_key" class="form__input" value="rtmp://localhost:8554/{{ stream_url }}">
-                                <span class="form__error"></span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-			</div>
-		</div>
-	</section>
-</main>
-	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__logo">
-						<a href="/">
-							<img src="{% static 'images/logo.png' %}" alt="">
-						</a>
+					<div class="clearfix"></div> 
+					<div class="col-xs-6" style="max-width: 100%; width: 50%; position: relative;">	
+						<form class="form" method="post" action="{% url 'profile' username %}">
+							<div class="form__group">
+								<label for="id_key" class="form__label">Copy this Path to OBS->file->settings->server</label>
+								<div class="form__field-group">
+									<input type="text" name="key" id="id_key" class="form__input" value="rtmp://localhost/live/livestream">
+									<span class="form__error"></span>
+								</div>
+								<label for="id_key" class="form__label">if you are starting private stream change settings->server to</label>
+								<div class="form__field-group">
+									<input type="text" name="key" id="id_key" class="form__input" value="rtmp://localhost/live/livestream/private">
+									<span class="form__error"></span>
+								</div>
+								<label for="id_key" class="form__label">Copy your secret key to OBS->file->settings->Stream key</label>
+								<div class="form__field-group">
+									<input type="text" name="key" id="id_key" class="form__input" value="{{stream.key}}">
+									<span class="form__error"></span>
+								</div>
+							</div>
+						</form>
 					</div>
-					<div class="footer__social">
-						join us on
-							<a href="https://t.me/hotcams_official" target="_blank">
-								<i class="fab fa-telegram-plane"></i>
-							</a>							
-							<a href="https://twitter.com/hotcams_token" target="_blank">
-								<i class="fab fa-twitter"></i>
-							</a>
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__title">
-						HotCams
-					</div>
-					<div class="footer__menu">
-						<ul id="menu-main-menu-1" class="menu">
-							<li class="pink menu-item menu-item-type-custom menu-item-object-custom menu-item-10"><a target="_blank" rel="noopener" href="https://hotcamstoken.com/wp-content/uploads/2021/10/HotCams-WhitePaper-.pdf">White Paper</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11"><a href="{% url 'index' %}">Home</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12"><a href="">Streams</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13"><a href="{% url 'categories' }">Categories</a></li>
-							<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14"><a href="">Contacts</a></li>
-						</ul>					
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-3 mb-3">
-					<div class="footer__title">
-						Get in touch
-					</div>
-					<div class="footer__mail">
-						<a href="mailto:support@hotcamstoken.com">
-							support@hotcamstoken.com							
-						</a>
-					</div>										
-				</div>
-				<div class="col-sm-6 col-lg-3">
-					<div class="footer__title">
-						Quick links
-					</div>
-					<div class="footer__link">
-						<a href="https://bscscan.com/token/0x6D1B3fdf5096465fb8B81A9B6e734a9641b50c24" target="_blank">BSC CONTRACT</a>
-						<a href="https://pancakeswap.finance/swap/0x6d1b3fdf5096465fb8b81a9b6e734a9641b50c24" target="_blank">BUY ON PANCAKESWAP</a>
+					<div class="col-xs-6" style="max-width: 100%; width:50%;">
+						<div class="but_dd">
+							{% if live %}
+								{% if stream.private_key %}
+									<form class="form" method="post" action="{% url 'profile' username %}">
+										{% csrf_token %}
+										<div class="form__group" style="text-align: center;">
+											<label for="id_key" class="form__label">Your private key</label>
+											<div class="form__field-group">
+												<input type="text" name="secret_key" id="secret_key" class="form__input" value="{{ stream.private_key }}">
+												<span class="form__error"></span>
+											</div>
+										</div>
+										<div class="form__footer">
+											<div class="button">
+												<input type="hidden" name="method" value="change_private_key">
+												<input type="hidden" name="name" value="{{ stream.key }}">
+												<button class="button button_style_blue">Generate new key</button>
+											</div>
+										</div>
+									</form>
+								{% endif %}
+							{% else %}
+								<form action="{% url 'start-stream' %}" method="post">
+									<input type="hidden" name="method" value="PUT">
+									<input type="hidden" name="name" value="{{ stream.key }}">
+									<button type="submit" class="but but_style_blue">Start private stream</button>
+								</form>
+							{% endif %}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</footer>
+		</section>
+	</main>
+	{% include 'footer.html' %}
 	<div id="scroll_up">
 		<img src="{% static 'images/up.png' %}" alt="">
 	</div>
